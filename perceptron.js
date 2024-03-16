@@ -157,14 +157,30 @@ for (let i = 0; i < 10000; i++) {
     perceptron.train(inputs, targets, learningRate);
 }
 
-const testInput = [2010, 10000, 3, 10.5];
-const normalizedTestInput = normalizeInputs(testInput);
-const output = perceptron.feedForward(normalizedTestInput).map(value => Math.round(value));
+// Функция для тестирования
+function testPerceptron(testInput) {
+    const normalizedTestInput = normalizeInputs(testInput);
+    const output = perceptron.feedForward(normalizedTestInput).map(value => Math.round(value));
 
-const classNames = ["Легковой автомобиль", "Грузовик", "Мотоцикл", "Внедорожник"];
-const predictedClassIndex = output.indexOf(Math.max(...output));
-const predictedClassName = classNames[predictedClassIndex];
+    const classNames = ["Легковой автомобиль", "Грузовик", "Мотоцикл", "Внедорожник"];
+    const predictedClassIndex = output.indexOf(Math.max(...output));
+    const predictedClassName = classNames[predictedClassIndex];
 
-console.log("Test Input:", testInput);
-console.log("Normalized Test Input:", normalizedTestInput);
-console.log("Predicted Class:", predictedClassName);
+    console.log("Test Input:", testInput);
+    console.log("Normalized Test Input:", normalizedTestInput);
+    console.log("Predicted Class:", predictedClassName);
+}
+
+// Обучение и тестирование
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.question('Введите год, пробег, массу и объем двигателя через запятую: ', (input) => {
+    const [year, mileage, weight, engineVolume] = input.split(',').map(parseFloat);
+    const testInput = [year, mileage, weight, engineVolume];
+    testPerceptron(testInput);
+    rl.close();
+});
